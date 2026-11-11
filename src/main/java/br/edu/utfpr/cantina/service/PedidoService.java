@@ -12,7 +12,7 @@ public class PedidoService {
     public void registrar(Pedido pedido) throws SQLException {
         if(pedido==null || pedido.getCliente()==null || pedido.getCliente().getIdCliente()<=0) throw new IllegalArgumentException("Selecione um cliente.");
         if(pedido.getItens().isEmpty()) throw new IllegalArgumentException("Adicione pelo menos um produto ao pedido.");
-        for(ItemPedido item:pedido.getItens()) if(item.getQuantidade()<=0 || item.getProduto()==null || item.getProduto().getIdProduto()<=0) throw new IllegalArgumentException("Item do pedido inválido.");
+        for(ItemPedido item:pedido.getItens()) if(item==null || item.getQuantidade()<=0 || item.getProduto()==null || item.getProduto().getIdProduto()<=0) throw new IllegalArgumentException("Item do pedido inválido.");
         repositorio.registrar(pedido);
     }
     public List<Pedido> listar() throws SQLException { return repositorio.listarTodos(); }

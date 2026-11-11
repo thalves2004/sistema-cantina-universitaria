@@ -4,11 +4,11 @@ package br.edu.utfpr.cantina;
 import br.edu.utfpr.cantina.controller.ClienteController;
 import br.edu.utfpr.cantina.database.Conexao;
 import br.edu.utfpr.cantina.repository.JdbcClienteRepository;
-import br.edu.utfpr.cantina.repository.ProdutoRepository;
+import br.edu.utfpr.cantina.repository.JdbcProdutoRepository;
 import br.edu.utfpr.cantina.controller.ProdutoController;
 import br.edu.utfpr.cantina.controller.PedidoController;
 import br.edu.utfpr.cantina.repository.JdbcPedidoRepository;
-import br.edu.utfpr.cantina.repository.RelatorioRepository;
+import br.edu.utfpr.cantina.repository.JdbcRelatorioRepository;
 import br.edu.utfpr.cantina.service.RelatorioService;
 import br.edu.utfpr.cantina.controller.RelatorioController;
 import br.edu.utfpr.cantina.service.PedidoService;
@@ -26,9 +26,9 @@ public class App {
                 new ClienteService(new JdbcClienteRepository())
             );
 
-            ProdutoController produtoController = new ProdutoController(new ProdutoService(new ProdutoRepository()));
+            ProdutoController produtoController = new ProdutoController(new ProdutoService(new JdbcProdutoRepository()));
             PedidoController pedidoController = new PedidoController(new PedidoService(new JdbcPedidoRepository()));
-            RelatorioController relatorioController = new RelatorioController(new RelatorioService(new RelatorioRepository()));
+            RelatorioController relatorioController = new RelatorioController(new RelatorioService(new JdbcRelatorioRepository()));
             TelaPrincipal tela = new TelaPrincipal(controller, produtoController, pedidoController, relatorioController);
 
             if (!Conexao.testarConexao()) {

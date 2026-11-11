@@ -18,13 +18,16 @@ public class ClienteService {
         repository.excluir(id);
     }
     private void validar(Cliente cliente) {
+        if (cliente == null) throw new IllegalArgumentException("Informe os dados do cliente.");
         if (cliente.getNome() == null || cliente.getNome().trim().isEmpty())
             throw new IllegalArgumentException("Informe o nome do cliente.");
         if (cliente.getNome().trim().length() > 120)
             throw new IllegalArgumentException("O nome deve ter no máximo 120 caracteres.");
-        if (cliente.getEmail() == null || !cliente.getEmail().matches("^[\\w.!#$%&'*+/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+$"))
+        if (cliente.getEmail() == null) throw new IllegalArgumentException("Informe um e-mail válido.");
+        cliente.setEmail(cliente.getEmail().trim().toLowerCase());
+        if (!cliente.getEmail().matches("^[\\w.!#$%&'*+/=?^_`{|}~-]+@[\\w-]+(?:\\.[\\w-]+)+$"))
             throw new IllegalArgumentException("Informe um e-mail válido.");
         if (cliente.getEmail().length() > 150) throw new IllegalArgumentException("O e-mail deve ter no máximo 150 caracteres.");
-        cliente.setNome(cliente.getNome().trim()); cliente.setEmail(cliente.getEmail().trim().toLowerCase());
+        cliente.setNome(cliente.getNome().trim());
     }
 }

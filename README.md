@@ -16,7 +16,7 @@ Projeto acadêmico em Java 21, Swing, Maven, JDBC e MySQL, organizado em camadas
 - Alertas visuais de estoque baixo: produtos com 5 unidades ou menos são destacados na tela de produtos e listados no painel.
 - Interface Swing reorganizada com tema Nimbus, cartões de indicadores e tabelas aprimoradas.
 - Validações de domínio nas classes de serviço.
-- Separação entre serviço e persistência de clientes por meio da interface `ClienteRepositoryPort`, aplicando o princípio DIP.
+- Inversão de dependência (DIP) aplicada aos serviços de clientes, produtos, pedidos e relatórios por meio dos contratos `ClienteRepositoryPort`, `ProdutoRepositoryPort`, `PedidoRepositoryPort` e `RelatorioRepositoryPort`; as implementações JDBC ficam separadas.
 
 ## Situação dos requisitos do projeto
 | Requisito | Situação no código entregue |
@@ -66,6 +66,15 @@ mvn exec:java
 ```
 Na primeira execução, o Maven precisa baixar o MySQL Connector/J.
 
+## Testes automatizados
+Os testes unitários dos serviços utilizam JUnit 5 e repositórios simulados (fakes), sem exigir conexão com MySQL:
+
+```powershell
+mvn test
+```
+
+A suíte em `src/test/java/br/edu/utfpr/cantina/service/ServicosTest.java` cobre normalização e validação de cliente, validação de produto (preço e estoque), validação e encaminhamento de pedido e rejeição de período inválido em relatório. Esses testes isolam a camada de serviço; não substituem testes de integração com um MySQL real.
+
 ## Testes manuais recomendados
 1. Cadastrar cliente com nome e e-mail válidos.
 2. Tentar cadastrar e-mail repetido e conferir a mensagem do banco.
@@ -88,7 +97,7 @@ src/main/java/br/edu/utfpr/cantina/
   controller/       # controladores Swing
   database/         # conexão JDBC
   model/            # Cliente, Produto, Pedido e ItemPedido
-  repository/       # persistência JDBC e contratos
+  repository/       # contratos (*Port) e implementações JDBC
   service/          # validações e regras de negócio
   view/             # telas Swing
 ```
